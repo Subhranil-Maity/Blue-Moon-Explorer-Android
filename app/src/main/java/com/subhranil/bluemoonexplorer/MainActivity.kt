@@ -1,29 +1,31 @@
 package com.subhranil.bluemoonexplorer
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.subhranil.bluemoonexplorer.BlueMoonApi.BlueDevice.getDir
-import com.subhranil.bluemoonexplorer.BlueMoonApi.Method
 import com.subhranil.bluemoonexplorer.BlueMoonApi.models.Device
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.DirItems
-import com.subhranil.bluemoonexplorer.destinations.ExplorerScreenDestination
+import com.subhranil.bluemoonexplorer.TestItems.testDevice
 import com.subhranil.bluemoonexplorer.ui.theme.BlueMoonExplorerTheme
+import com.subhranil.bluemoonexplorer.utils.DevicePlaceholder
+import com.subhranil.bluemoonexplorer.utils.Explorer
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,44 +36,67 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.background)
-                ){
+                ) {
                     DestinationsNavHost(navGraph = NavGraphs.root)
                 }
-
             }
         }
     }
 
-
+    fun getContext(): Context {
+        return this
+    }
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RootNavGraph(start = true)
-@Destination()
+@Destination
 @Composable
 fun HomeScreen(
     navigator: DestinationsNavigator
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Button(
-            onClick = {
-                navigator.navigate(
-                    ExplorerScreenDestination(
-                        device = Device(
-                            host = "192.168.225.50",
-                            port = 65432,
-                            method = Method.http,
-                            pwd = "admin"
-                        ),
-                        null
-                    )
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            .fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "Devices", style = MaterialTheme.typography.titleLarge)
+                }, scrollBehavior = scrollBehavior
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            "Not Yet Implemented"
+                        )
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
+        }
+    ) {
+        LazyColumn(
+            contentPadding = it
         ) {
-            Text(text = "Go")
+            item {
+
+                DevicePlaceholder(testDevice, navigator)
+            }
         }
     }
-
 }
 
 @Destination
@@ -82,57 +107,6 @@ fun ExplorerScreen(
     path: String?
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        Explorer(navigator = navigator, device = device, path = path?:"c:/")
+        Explorer(navigator = navigator, device = device, path = path)
     }
 }
-
-@Composable
-fun Explorer(navigator: DestinationsNavigator, device: Device, path: String) {
-    val items = produceState<List<DirItems>>(
-        initialValue = emptyList(),
-        producer = {
-            value = getDir(device, path)
-        })
-    Column(
-        modifier = Modifier
-            .verticalScroll(
-                rememberScrollState()
-            )
-            .fillMaxSize()
-    ) {
-        items.value.forEach { item ->
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .clickable(onClick = {
-                        navigator.navigate(
-                            ExplorerScreenDestination(
-                                device = device,
-                                path = item.path
-                            )
-                        )
-                    })
-            ) {
-                Row(modifier = Modifier) {
-                    Image(
-                        if (item.type == "file")
-                            painterResource(id = R.drawable.file)
-                        else painterResource(id = R.drawable.folder),
-                        contentDescription = "Icon"
-                    )
-                    Text(item.name)
-                    Column(modifier = Modifier) {
-
-                    }
-                }
-            }
-        }
-    }
-}
-@Composable
-private fun FilesOrFolder(navigator: DestinationsNavigator, item: DirItems) {
-
-}
-
-

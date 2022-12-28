@@ -3,7 +3,7 @@ package com.subhranil.bluemoonexplorer.BlueMoonApi
 import android.util.Log
 import com.subhranil.bluemoonexplorer.BlueMoonApi.BlueApiClient.Companion.getClient
 import com.subhranil.bluemoonexplorer.BlueMoonApi.models.Device
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.DirItems
+import com.subhranil.bluemoonexplorer.BlueMoonApi.models.DirItem
 import com.subhranil.bluemoonexplorer.BlueMoonApi.models.File
 import com.subhranil.bluemoonexplorer.BlueMoonApi.models.Root
 import io.ktor.client.*
@@ -24,7 +24,7 @@ object BlueDevice{
             "Error"
         }
     }
-    suspend fun getDir(device: Device, path: String): List<DirItems>{
+    suspend fun getDir(device: Device, path: String): List<DirItem>{
         return try {
             client.get {
                 url("${getBaseUrl(device)}/dir")
@@ -32,6 +32,31 @@ object BlueDevice{
                 parameter("path", path)
             }
         }catch (e: Exception){
+            emptyList()
+        }
+    }
+    suspend fun getRoot(device: Device): Root?{
+        return try {
+            client.get(getBaseUrl(device))
+        }catch (_: Exception){
+            null
+        }
+    }
+    suspend fun getDrives(device: Device): List<DirItem>{
+        return try {
+            val drives = client.get<Root>(getBaseUrl(device)).drives
+            val driveList = mutableListOf<DirItem>()
+            for (drive in drives){
+                driveList += DirItem(
+                    name = "Local Disk $drive",
+                    path = drive,
+                    size = -1,
+                    type = "drive"
+                )
+            }
+
+            driveList
+        }catch (_: Exception){
             emptyList()
         }
     }
