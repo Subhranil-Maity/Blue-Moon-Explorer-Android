@@ -45,11 +45,10 @@ object BlueDevice{
     suspend fun getDrives(device: Device): List<DirItem>{
         return try {
             val drives = client.get<Root>(getBaseUrl(device)).drives
-            val driveList = mutableListOf<DirItem>()
-            for (drive in drives){
-                driveList += DirItem(
-                    name = "Local Disk $drive",
-                    path = drive,
+            val driveList = drives.map {
+                DirItem(
+                    name = "Local Disk $it",
+                    path = it,
                     size = -1,
                     type = "drive"
                 )

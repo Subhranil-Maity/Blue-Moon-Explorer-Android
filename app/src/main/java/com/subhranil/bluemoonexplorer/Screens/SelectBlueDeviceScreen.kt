@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
 import com.subhranil.bluemoonexplorer.TestItems
+import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceFloatingActionButton
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceTopAppBar
 import com.subhranil.bluemoonexplorer.utils.DevicePlaceholder
 import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
@@ -38,21 +39,7 @@ fun SelectBlueDeviceScreen(
             BlueDeviceTopAppBar(scrollBehavior)
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            "Not Yet Implemented"
-                        )
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
+            BlueDeviceFloatingActionButton(scope = scope, snackbarHostState = snackbarHostState)
         }
     ) {
         LazyColumn(
