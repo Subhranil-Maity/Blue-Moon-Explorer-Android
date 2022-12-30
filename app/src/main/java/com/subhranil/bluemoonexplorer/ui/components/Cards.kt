@@ -31,7 +31,7 @@ fun BlueDeviceCard(
             value = BlueDevice.getRoot(device) ?: value
             deviceViewModel.addDetails(value)
         }
-    )
+    ) 
     ElevatedCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
