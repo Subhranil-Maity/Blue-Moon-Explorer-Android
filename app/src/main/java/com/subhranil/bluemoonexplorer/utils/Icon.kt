@@ -3,7 +3,7 @@ package com.subhranil.bluemoonexplorer.utils
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.DirItem
+import com.subhranil.bluemoonexplorer.models.DirItem
 import com.subhranil.bluemoonexplorer.R
 import com.subhranil.bluemoonexplorer.utils.Extentions.getFileType
 import com.subhranil.bluemoonexplorer.utils.enum.FileType

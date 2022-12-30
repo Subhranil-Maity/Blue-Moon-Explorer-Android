@@ -1,6 +1,6 @@
 package com.subhranil.bluemoonexplorer.utils
 
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.Device
+import com.subhranil.bluemoonexplorer.models.Device
 
 const val separator = "@@@###"
 fun encodeDevice(

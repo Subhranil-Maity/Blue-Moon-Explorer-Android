@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.subhranil.bluemoonexplorer.BlueMoonApi.BlueDevice
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.DirItem
+import com.subhranil.bluemoonexplorer.models.DirItem
 import com.subhranil.bluemoonexplorer.Screens.Screen
 import com.subhranil.bluemoonexplorer.utils.Icon
 import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel

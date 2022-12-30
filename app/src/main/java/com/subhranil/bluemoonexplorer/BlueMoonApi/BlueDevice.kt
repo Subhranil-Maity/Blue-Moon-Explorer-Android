@@ -1,11 +1,12 @@
 package com.subhranil.bluemoonexplorer.BlueMoonApi
 
-import android.util.Log
 import com.subhranil.bluemoonexplorer.BlueMoonApi.BlueApiClient.Companion.getClient
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.Device
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.DirItem
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.File
-import com.subhranil.bluemoonexplorer.BlueMoonApi.models.Root
+import com.subhranil.bluemoonexplorer.models.Device
+import com.subhranil.bluemoonexplorer.models.DirItem
+import com.subhranil.bluemoonexplorer.models.File
+import com.subhranil.bluemoonexplorer.models.Root
+import com.subhranil.bluemoonexplorer.utils.sortDirItems
+import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
 import io.ktor.client.*
 import io.ktor.client.request.*
 //@kotlinx.serialization.Serializable
@@ -17,20 +18,21 @@ object BlueDevice{
     suspend fun isAlive(device: Device): String{
         return try {
             client.get<Root> {
-                url("" + getBaseUrl(device))
+                url(getBaseUrl(device))
             }.name
         } catch(e: Exception){
-            Log.d("HELLO", "\n\n\n$e\n\n\n")
             "Error"
         }
     }
     suspend fun getDir(device: Device, path: String): List<DirItem>{
         return try {
-            client.get {
-                url("${getBaseUrl(device)}/dir")
-                parameter("pwd", device.pwd)
-                parameter("path", path)
-            }
+            sortDirItems(
+                client.get {
+                    url("${getBaseUrl(device)}/dir")
+                    parameter("pwd", device.pwd)
+                    parameter("path", path)
+                }
+            )
         }catch (e: Exception){
             emptyList()
         }
@@ -58,6 +60,13 @@ object BlueDevice{
         }catch (_: Exception){
             emptyList()
         }
+    }
+    suspend fun loadDetails(deviceViewModel: DeviceViewModel){
+        if (deviceViewModel.device.details != null) return
+        val device = deviceViewModel.device
+        val details = client.get<Root>(getBaseUrl(device))
+        device.details = details
+        deviceViewModel.addDevice(device)
     }
     suspend fun getFile(device: Device, path: String): File?{
         return null

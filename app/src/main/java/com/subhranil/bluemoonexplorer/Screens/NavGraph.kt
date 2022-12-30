@@ -1,6 +1,7 @@
 package com.subhranil.bluemoonexplorer.Screens
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
@@ -12,6 +13,7 @@ fun SetupNavGraph(
     navController: NavHostController
 ) {
     val deviceViewModel: DeviceViewModel = viewModel()
+    val scope = rememberCoroutineScope()
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
@@ -29,7 +31,8 @@ fun SetupNavGraph(
 
             ) {
             SelectBlueDeviceScreen(
-                deviceViewModel, navController
+                deviceViewModel, navController,
+                scope = scope
             )
         }
         composable(
@@ -44,9 +47,18 @@ fun SetupNavGraph(
             ExplorerScreen(
                 navController = navController,
                 deviceViewModel = deviceViewModel,
-                path = it.arguments?.getString(PATH_ARGS_KEY)
+                path = it.arguments?.getString(PATH_ARGS_KEY),
+                scope = scope
             )
 
+        }
+        composable(
+            route = Screen.DeviceInfoScreen.route
+        ) {
+            DeviceInfoScreen(
+                navController = navController,
+                deviceViewModel = deviceViewModel
+            )
         }
     }
 }

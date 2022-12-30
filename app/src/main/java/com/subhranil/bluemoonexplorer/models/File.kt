@@ -1,4 +1,4 @@
-package com.subhranil.bluemoonexplorer.BlueMoonApi.models
+package com.subhranil.bluemoonexplorer.models
 
 @kotlinx.serialization.Serializable
 data class File(
