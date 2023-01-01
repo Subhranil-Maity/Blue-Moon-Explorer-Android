@@ -14,24 +14,25 @@ import com.google.accompanist.flowlayout.SizeMode
 import com.subhranil.bluemoonexplorer.BlueMoonApi.BlueDevice
 import com.subhranil.bluemoonexplorer.R
 import com.subhranil.bluemoonexplorer.models.Device
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlueDeviceCard(
     navController: NavController,
-    deviceViewModel: DeviceViewModel,
+    globalStorageViewModel: GlobalStorageViewModel,
     modifier: Modifier = Modifier,
     device: Device
 ) {
 //    val device = deviceViewModel.device
     val details = produceState(
-        initialValue = deviceViewModel.deviceDetails,
+        initialValue = globalStorageViewModel.deviceDetails,
         producer = {
             value = BlueDevice.getRoot(device) ?: value
-            deviceViewModel.addDetails(value)
+            globalStorageViewModel.addDetails(value)
         }
-    ) 
+    )
     ElevatedCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -62,7 +63,7 @@ fun BlueDeviceCard(
                 ExploreDeviceAssistChip(
                     details = details,
                     navController = navController,
-                    deviceViewModel = deviceViewModel,
+                    globalStorageViewModel = globalStorageViewModel,
                     device = device
                 )
 

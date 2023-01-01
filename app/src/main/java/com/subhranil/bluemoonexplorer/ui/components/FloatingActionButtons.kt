@@ -8,6 +8,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import com.subhranil.bluemoonexplorer.Screens.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -43,6 +45,25 @@ fun BlueDeviceInfoEditFloatingActionButton(
                 snackbarHostState.showSnackbar(
                     "Not Yet Implemented"
                 )
+            }
+        }
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Edit,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }
+}
+@Composable
+fun HomeFloatingActionButton(
+    scope: CoroutineScope,
+    navController: NavController
+){
+    FloatingActionButton(
+        onClick = {
+            scope.launch {
+                navController.navigate(Screen.SelectBlueDevice.route)
             }
         }
     ) {

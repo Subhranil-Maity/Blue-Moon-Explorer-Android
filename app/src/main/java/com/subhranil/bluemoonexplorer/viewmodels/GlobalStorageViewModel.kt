@@ -1,6 +1,7 @@
 package com.subhranil.bluemoonexplorer.viewmodels
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -8,14 +9,15 @@ import com.subhranil.bluemoonexplorer.models.Device
 import com.subhranil.bluemoonexplorer.models.Root
 import com.subhranil.bluemoonexplorer.TestItems.testDevice
 
-class DeviceViewModel : ViewModel() {
+class GlobalStorageViewModel : ViewModel() {
     var currentPath by mutableStateOf<String?>(null)
-    var device by mutableStateOf(
+    var currentDevice by mutableStateOf(
         testDevice
     )
+    private var deviceList = mutableStateListOf<Device>()
     var deviceDetails by mutableStateOf(
         Root(
-            name = device.host,
+            name = currentDevice.host,
             default_location = "",
             drives = emptyList(),
             platform = "",
@@ -26,9 +28,11 @@ class DeviceViewModel : ViewModel() {
     fun addPath(newPath: String?) {
         currentPath = newPath
     }
-
-    fun addDevice(newDevice: Device) {
-        device = newDevice
+    fun addToDeviceList(newDevice: Device){
+        deviceList.add(newDevice)
+    }
+    fun selectDevice(newDevice: Device) {
+        currentDevice = newDevice
     }
     fun addDetails(newDetails: Root){
         deviceDetails = newDetails

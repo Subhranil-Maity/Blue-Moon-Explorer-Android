@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BlueMoon Explorer</string>
+    <string name="title_activity_show_msg">ShowMsgActivity</string>
 </resources>

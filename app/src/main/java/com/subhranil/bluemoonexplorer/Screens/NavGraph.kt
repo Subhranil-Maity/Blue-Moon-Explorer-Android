@@ -1,19 +1,20 @@
 package com.subhranil.bluemoonexplorer.Screens
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 
 @Composable
 fun SetupNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    scope: LifecycleCoroutineScope
 ) {
-    val deviceViewModel: DeviceViewModel = viewModel()
-    val scope = rememberCoroutineScope()
+    val globalStorageViewModel: GlobalStorageViewModel = viewModel()
+//    loadStorage(globalStorageViewModel)
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
@@ -23,7 +24,8 @@ fun SetupNavGraph(
 
             ) {
             HomeScreen(
-                navController
+                navController,
+                scope
             )
         }
         composable(
@@ -31,7 +33,7 @@ fun SetupNavGraph(
 
             ) {
             SelectBlueDeviceScreen(
-                deviceViewModel, navController,
+                globalStorageViewModel, navController,
                 scope = scope
             )
         }
@@ -46,7 +48,7 @@ fun SetupNavGraph(
 
             ExplorerScreen(
                 navController = navController,
-                deviceViewModel = deviceViewModel,
+                globalStorageViewModel = globalStorageViewModel,
                 path = it.arguments?.getString(PATH_ARGS_KEY),
                 scope = scope
             )
@@ -57,7 +59,8 @@ fun SetupNavGraph(
         ) {
             DeviceInfoScreen(
                 navController = navController,
-                deviceViewModel = deviceViewModel
+                globalStorageViewModel = globalStorageViewModel,
+                scope = scope
             )
         }
     }

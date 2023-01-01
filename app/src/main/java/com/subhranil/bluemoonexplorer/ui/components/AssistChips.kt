@@ -10,21 +10,21 @@ import androidx.navigation.NavController
 import com.subhranil.bluemoonexplorer.Screens.Screen
 import com.subhranil.bluemoonexplorer.models.Device
 import com.subhranil.bluemoonexplorer.models.Root
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExploreDeviceAssistChip(
     details: State<Root>,
     navController: NavController,
-    deviceViewModel: DeviceViewModel,
+    globalStorageViewModel: GlobalStorageViewModel,
     device: Device
 ) {
     AssistChip(
         onClick = {
             if (details.value.drives != emptyList<String>()) {
-                deviceViewModel.addDevice(device)
-                deviceViewModel.addPath(null)
+                globalStorageViewModel.selectDevice(device)
+                globalStorageViewModel.addPath(null)
                 navController.navigate(
                     Screen.ExplorerScreen.setPath(null)
                 )

@@ -1,11 +1,19 @@
 package com.subhranil.bluemoonexplorer.ui.components
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.R
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,12 +59,12 @@ fun ExplorerTopAppBar(
 fun BlueDeviceInfoTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     navController: NavController,
-    deviceViewModel: DeviceViewModel
+    globalStorageViewModel: GlobalStorageViewModel
 ) {
     TopAppBar(
         title = {
             Text(
-                text = "Info: ${deviceViewModel.deviceDetails.name}",
+                text = "Info: ${globalStorageViewModel.deviceDetails.name}",
                 style = MaterialTheme.typography.headlineLarge
             )
         },
@@ -69,5 +77,32 @@ fun BlueDeviceInfoTopAppBar(
                 )
             }
         }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeTopAppBar(
+    scrollBehavior: TopAppBarScrollBehavior,
+    navController: NavController
+) {
+    CenterAlignedTopAppBar(
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = null,
+                    modifier = Modifier.height(50.dp).width(50.dp)
+                )
+                Text(
+                    text = "BlueMoon Explorer",
+                    style = MaterialTheme.typography.headlineLarge
+                )
+            }
+
+        },
+        scrollBehavior = scrollBehavior
     )
 }

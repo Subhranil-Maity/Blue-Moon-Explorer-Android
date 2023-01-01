@@ -6,23 +6,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceInfoEditFloatingActionButton
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceInfoTopAppBar
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
+import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceInfoScreen(
     navController: NavController,
-    deviceViewModel: DeviceViewModel
+    globalStorageViewModel: GlobalStorageViewModel,
+    scope: CoroutineScope
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier
@@ -32,7 +32,7 @@ fun DeviceInfoScreen(
             BlueDeviceInfoTopAppBar(
                 scrollBehavior,
                 navController = navController,
-                deviceViewModel = deviceViewModel
+                globalStorageViewModel = globalStorageViewModel
             )
         },
         floatingActionButton = {
@@ -45,11 +45,11 @@ fun DeviceInfoScreen(
         Column(
             modifier = Modifier.padding(it)
         ) {
-            Text(text = "IP: ${deviceViewModel.device.host}", style = MaterialTheme.typography.titleLarge)
-            Text(text = "PORT: ${deviceViewModel.device.port}", style = MaterialTheme.typography.titleLarge)
-            Text(text = "METHOD: ${deviceViewModel.device.method.string}", style = MaterialTheme.typography.titleLarge)
-            Text(text = "PWD: ${deviceViewModel.device.pwd}", style = MaterialTheme.typography.titleLarge)
-            Text(text = "PLATFORM: ${deviceViewModel.deviceDetails.platform}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "IP: ${globalStorageViewModel.currentDevice.host}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "PORT: ${globalStorageViewModel.currentDevice.port}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "METHOD: ${globalStorageViewModel.currentDevice.method.string}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "PWD: ${globalStorageViewModel.currentDevice.pwd}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "PLATFORM: ${globalStorageViewModel.deviceDetails.platform}", style = MaterialTheme.typography.titleLarge)
         }
     }
 }

@@ -3,26 +3,22 @@ package com.subhranil.bluemoonexplorer.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.subhranil.bluemoonexplorer.BlueMoonApi.BlueDevice
 import com.subhranil.bluemoonexplorer.models.DirItem
 import com.subhranil.bluemoonexplorer.Screens.Screen
-import com.subhranil.bluemoonexplorer.utils.Icon
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.utils.ItemIcon
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 
 
 @Composable
 fun Explorer(
     navController: NavController,
-    deviceViewModel: DeviceViewModel,
+    globalStorageViewModel: GlobalStorageViewModel,
     path: String?
 ) {
 
@@ -48,7 +44,7 @@ fun DirItemCompose(
     ) {
         Row(modifier = Modifier) {
             Image(
-                painter = Icon.determine(item),
+                painter = ItemIcon.determine(item),
                 contentDescription = "Icon"
             )
             Text(item.name, style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onBackground)

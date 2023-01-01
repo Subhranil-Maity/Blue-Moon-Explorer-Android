@@ -8,7 +8,7 @@ import com.subhranil.bluemoonexplorer.R
 import com.subhranil.bluemoonexplorer.utils.Extentions.getFileType
 import com.subhranil.bluemoonexplorer.utils.enum.FileType
 
-object Icon {
+object ItemIcon {
     @Composable
     fun determine(item: DirItem): Painter {
         if (item.type == "folder") return painterResource(id = R.drawable.folder)

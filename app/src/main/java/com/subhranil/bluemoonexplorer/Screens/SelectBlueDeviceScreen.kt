@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
@@ -13,14 +12,14 @@ import com.subhranil.bluemoonexplorer.TestItems.testDevice
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceCard
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceFloatingActionButton
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceTopAppBar
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 import kotlinx.coroutines.CoroutineScope
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectBlueDeviceScreen(
-    deviceViewModel: DeviceViewModel,
+    globalStorageViewModel: GlobalStorageViewModel,
     navController: NavController,
     scope: CoroutineScope
 ){
@@ -48,7 +47,7 @@ fun SelectBlueDeviceScreen(
 
                 BlueDeviceCard(
                     navController,
-                    deviceViewModel = deviceViewModel,
+                    globalStorageViewModel = globalStorageViewModel,
                     device = testDevice
                 )
             }

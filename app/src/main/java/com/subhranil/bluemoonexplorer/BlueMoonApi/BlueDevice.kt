@@ -5,26 +5,31 @@ import com.subhranil.bluemoonexplorer.models.Device
 import com.subhranil.bluemoonexplorer.models.DirItem
 import com.subhranil.bluemoonexplorer.models.File
 import com.subhranil.bluemoonexplorer.models.Root
+import com.subhranil.bluemoonexplorer.utils.Extentions.getFileType
+import com.subhranil.bluemoonexplorer.utils.enum.FileType
 import com.subhranil.bluemoonexplorer.utils.sortDirItems
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 import io.ktor.client.*
 import io.ktor.client.request.*
+
 //@kotlinx.serialization.Serializable
-object BlueDevice{
+object BlueDevice {
     private val client: HttpClient = getClient()
-    private fun getBaseUrl(device: Device): String{
+    private fun getBaseUrl(device: Device): String {
         return "${device.method.string}${device.host}:${device.port}"
     }
-    suspend fun isAlive(device: Device): String{
+
+    suspend fun isAlive(device: Device): String {
         return try {
             client.get<Root> {
                 url(getBaseUrl(device))
             }.name
-        } catch(e: Exception){
+        } catch (e: Exception) {
             "Error"
         }
     }
-    suspend fun getDir(device: Device, path: String): List<DirItem>{
+
+    suspend fun getDir(device: Device, path: String): List<DirItem> {
         return try {
             sortDirItems(
                 client.get {
@@ -32,19 +37,23 @@ object BlueDevice{
                     parameter("pwd", device.pwd)
                     parameter("path", path)
                 }
-            )
-        }catch (e: Exception){
+            ).filter {
+                isShowAbleItem(it)
+            }
+        } catch (e: Exception) {
             emptyList()
         }
     }
-    suspend fun getRoot(device: Device): Root?{
+
+    suspend fun getRoot(device: Device): Root? {
         return try {
             client.get(getBaseUrl(device))
-        }catch (_: Exception){
+        } catch (_: Exception) {
             null
         }
     }
-    suspend fun getDrives(device: Device): List<DirItem>{
+
+    suspend fun getDrives(device: Device): List<DirItem> {
         return try {
             val drives = client.get<Root>(getBaseUrl(device)).drives
             val driveList = drives.map {
@@ -57,18 +66,29 @@ object BlueDevice{
             }
 
             driveList
-        }catch (_: Exception){
+        } catch (_: Exception) {
             emptyList()
         }
     }
-    suspend fun loadDetails(deviceViewModel: DeviceViewModel){
-        if (deviceViewModel.device.details != null) return
-        val device = deviceViewModel.device
+
+    suspend fun loadDetails(globalStorageViewModel: GlobalStorageViewModel) {
+        if (globalStorageViewModel.currentDevice.details != null) return
+        val device = globalStorageViewModel.currentDevice
         val details = client.get<Root>(getBaseUrl(device))
         device.details = details
-        deviceViewModel.addDevice(device)
+        globalStorageViewModel.selectDevice(device)
     }
-    suspend fun getFile(device: Device, path: String): File?{
+
+    suspend fun getFile(device: Device, path: String): File? {
         return null
     }
+}
+fun isShowAbleItem(item: DirItem): Boolean{
+    if (item.type == "folder" ){
+        if (item.name.startsWith("found.")) return false
+        if (item.name.startsWith("$")) return false
+    }else{
+        if (getFileType(item.name) == FileType.HIDDEN) return false
+    }
+    return true
 }

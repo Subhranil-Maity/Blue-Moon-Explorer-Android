@@ -1,26 +1,20 @@
 package com.subhranil.bluemoonexplorer.Screens
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.subhranil.bluemoonexplorer.BlueMoonApi.BlueDevice
 import com.subhranil.bluemoonexplorer.models.DirItem
 import com.subhranil.bluemoonexplorer.ui.components.*
-import com.subhranil.bluemoonexplorer.viewmodels.DeviceViewModel
+import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -28,11 +22,11 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun ExplorerScreen(
     navController: NavController,
-    deviceViewModel: DeviceViewModel,
+    globalStorageViewModel: GlobalStorageViewModel,
     path: String?,
     scope: CoroutineScope
 ) {
-    val device = deviceViewModel.device
+    val device = globalStorageViewModel.currentDevice
     val dirItems = produceState<List<DirItem>>(
         initialValue = emptyList()
     ) {
