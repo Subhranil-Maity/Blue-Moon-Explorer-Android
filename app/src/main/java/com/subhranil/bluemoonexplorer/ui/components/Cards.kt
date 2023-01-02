@@ -1,5 +1,6 @@
 package com.subhranil.bluemoonexplorer.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -25,15 +26,14 @@ fun BlueDeviceCard(
     modifier: Modifier = Modifier,
     device: Device
 ) {
-//    val device = deviceViewModel.device
+
     val details = produceState(
-        initialValue = globalStorageViewModel.deviceDetails,
+        initialValue = device.details,
         producer = {
             value = BlueDevice.getRoot(device) ?: value
-            globalStorageViewModel.addDetails(value)
         }
     )
-    ElevatedCard(
+    Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -50,7 +50,7 @@ fun BlueDeviceCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(text = details.value.name, style = MaterialTheme.typography.titleLarge)
+            Text(text = details.value?.name?:device.host, style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(10.dp))
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -66,7 +66,6 @@ fun BlueDeviceCard(
                     globalStorageViewModel = globalStorageViewModel,
                     device = device
                 )
-
             }
         }
     }

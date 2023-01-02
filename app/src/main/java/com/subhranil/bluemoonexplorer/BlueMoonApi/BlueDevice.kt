@@ -71,14 +71,6 @@ object BlueDevice {
         }
     }
 
-    suspend fun loadDetails(globalStorageViewModel: GlobalStorageViewModel) {
-        if (globalStorageViewModel.currentDevice.details != null) return
-        val device = globalStorageViewModel.currentDevice
-        val details = client.get<Root>(getBaseUrl(device))
-        device.details = details
-        globalStorageViewModel.selectDevice(device)
-    }
-
     suspend fun getFile(device: Device, path: String): File? {
         return null
     }

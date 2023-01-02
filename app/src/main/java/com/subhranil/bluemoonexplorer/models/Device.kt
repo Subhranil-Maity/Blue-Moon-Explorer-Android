@@ -8,5 +8,5 @@ data class Device(
     val port: Int,
     val method: Method,
     var pwd: String?,
-    var details: Root?
+    var details: Root? = null
 )

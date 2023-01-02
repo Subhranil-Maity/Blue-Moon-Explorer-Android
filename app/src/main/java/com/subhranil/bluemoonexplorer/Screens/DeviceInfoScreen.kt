@@ -45,11 +45,11 @@ fun DeviceInfoScreen(
         Column(
             modifier = Modifier.padding(it)
         ) {
-            Text(text = "IP: ${globalStorageViewModel.currentDevice.host}", style = MaterialTheme.typography.titleLarge)
-            Text(text = "PORT: ${globalStorageViewModel.currentDevice.port}", style = MaterialTheme.typography.titleLarge)
-            Text(text = "METHOD: ${globalStorageViewModel.currentDevice.method.string}", style = MaterialTheme.typography.titleLarge)
-            Text(text = "PWD: ${globalStorageViewModel.currentDevice.pwd}", style = MaterialTheme.typography.titleLarge)
-            Text(text = "PLATFORM: ${globalStorageViewModel.deviceDetails.platform}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "IP: ${globalStorageViewModel.currentDevice!!.host}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "PORT: ${globalStorageViewModel.currentDevice!!.port}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "METHOD: ${globalStorageViewModel.currentDevice!!.method.string}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "PWD: ${globalStorageViewModel.currentDevice!!.pwd}", style = MaterialTheme.typography.titleLarge)
+            Text(text = "PLATFORM: ${globalStorageViewModel.currentDevice!!.details?.platform}", style = MaterialTheme.typography.titleLarge)
         }
     }
 }

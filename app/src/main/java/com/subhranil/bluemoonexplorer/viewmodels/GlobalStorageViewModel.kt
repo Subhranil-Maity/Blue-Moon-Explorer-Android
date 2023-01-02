@@ -11,19 +11,10 @@ import com.subhranil.bluemoonexplorer.TestItems.testDevice
 
 class GlobalStorageViewModel : ViewModel() {
     var currentPath by mutableStateOf<String?>(null)
-    var currentDevice by mutableStateOf(
+    var currentDevice by mutableStateOf<Device?>(
         testDevice
     )
-    private var deviceList = mutableStateListOf<Device>()
-    var deviceDetails by mutableStateOf(
-        Root(
-            name = currentDevice.host,
-            default_location = "",
-            drives = emptyList(),
-            platform = "",
-            version = ""
-        )
-    )
+    var deviceList = mutableListOf<Device?>()
 
     fun addPath(newPath: String?) {
         currentPath = newPath
@@ -33,8 +24,5 @@ class GlobalStorageViewModel : ViewModel() {
     }
     fun selectDevice(newDevice: Device) {
         currentDevice = newDevice
-    }
-    fun addDetails(newDetails: Root){
-        deviceDetails = newDetails
     }
 }

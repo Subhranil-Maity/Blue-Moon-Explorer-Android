@@ -8,8 +8,6 @@ import androidx.lifecycle.coroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.subhranil.bluemoonexplorer.Screens.SetupNavGraph
-import com.subhranil.bluemoonexplorer.ui.components.DialogResponse
-import com.subhranil.bluemoonexplorer.ui.components.ShowDialog
 import com.subhranil.bluemoonexplorer.ui.theme.BlueMoonExplorerTheme
 import com.subhranil.bluemoonexplorer.utils.getExternalStoragePermission
 import com.subhranil.bluemoonexplorer.utils.hasExternalStoragePermission

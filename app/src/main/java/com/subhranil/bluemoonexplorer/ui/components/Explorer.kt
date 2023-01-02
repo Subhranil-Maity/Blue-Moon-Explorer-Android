@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import com.subhranil.bluemoonexplorer.models.DirItem
 import com.subhranil.bluemoonexplorer.Screens.Screen
 import com.subhranil.bluemoonexplorer.utils.ItemIcon
+import com.subhranil.bluemoonexplorer.utils.ItemIcon.GetIcon
 import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 
 
@@ -43,10 +44,7 @@ fun DirItemCompose(
             })
     ) {
         Row(modifier = Modifier) {
-            Image(
-                painter = ItemIcon.determine(item),
-                contentDescription = "Icon"
-            )
+            GetIcon(item)
             Text(item.name, style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onBackground)
             Column(modifier = Modifier) {
 

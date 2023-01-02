@@ -64,7 +64,7 @@ fun BlueDeviceInfoTopAppBar(
     TopAppBar(
         title = {
             Text(
-                text = "Info: ${globalStorageViewModel.deviceDetails.name}",
+                text = "Info: ${globalStorageViewModel.currentDevice!!.details?.name?:globalStorageViewModel.currentDevice!!.host}",
                 style = MaterialTheme.typography.headlineLarge
             )
         },

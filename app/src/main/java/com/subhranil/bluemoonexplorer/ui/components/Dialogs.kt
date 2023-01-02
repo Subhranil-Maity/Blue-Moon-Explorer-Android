@@ -1,48 +1,103 @@
 package com.subhranil.bluemoonexplorer.ui.components
 
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.text.TextStyle
-
-enum class DialogResponse {
-    CONFIRM,
-    DISMISS
-}
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 
 @Composable
-fun ShowDialog(
-    title: String,
-    description: String,
-    titleStyle: TextStyle = MaterialTheme.typography.headlineLarge,
-    descriptionStyle: TextStyle = MaterialTheme.typography.bodyMedium,
-    action: (DialogResponse, MutableState<Boolean>) -> Unit = { _, state -> state.value = false},
+fun CustomDialogWithResultExample(
+    onDismiss: () -> Unit, onNegativeClick: () -> Unit, onPositiveClick: (Color) -> Unit
 ) {
-    val alertState = remember { mutableStateOf(true) }
-    AlertDialog(
-        onDismissRequest = { alertState.value = false },
-        title = { Text(text = title, style = titleStyle) },
-        text = {
-            Text(text = description, style = descriptionStyle)
-        },
-        confirmButton = {
-            Button(onClick = {
-                action(DialogResponse.CONFIRM, alertState)
-            }) {
-                Text(text = "Confirm")
-            }
-        },
-        dismissButton = {
-            Button(onClick = {
-                action(DialogResponse.DISMISS, alertState)
-            }) {
-                Text(text = "Dismiss")
+    var host by remember { mutableStateOf("") }
+    var port by remember { mutableStateOf("") }
+    var pwd by remember { mutableStateOf("") }
+    var red by remember { mutableStateOf(0f) }
+    var green by remember { mutableStateOf(0f) }
+    var blue by remember { mutableStateOf(0f) }
+
+    val color = Color(
+        red = red.toInt(), green = green.toInt(), blue = blue.toInt(), alpha = 255
+    )
+
+    Dialog(onDismissRequest = onDismiss) {
+
+        Card(
+            elevation = CardDefaults.cardElevation(8.dp), shape = MaterialTheme.shapes.large
+        ) {
+
+            Column(modifier = Modifier.padding(8.dp)) {
+
+                Text(
+                    text = "Select Color",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(8.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+
+
+                    Column {
+
+                        Text(text = "Red ${red.toInt()}")
+                        Slider(value = red,
+                            onValueChange = { red = it },
+                            valueRange = 0f..255f,
+                            onValueChangeFinished = {})
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(text = "Green ${green.toInt()}")
+                        Slider(value = green,
+                            onValueChange = { green = it },
+                            valueRange = 0f..255f,
+                            onValueChangeFinished = {})
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(text = "Blue ${blue.toInt()}")
+                        Slider(value = blue,
+                            onValueChange = { blue = it },
+                            valueRange = 0f..255f,
+                            onValueChangeFinished = {})
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Surface(
+                            border = BorderStroke(1.dp, Color.DarkGray),
+                            color = color,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(40.dp)
+                        ) {}
+                    }
+                }
+
+                // Buttons
+                Row(
+                    horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()
+                ) {
+
+                    TextButton(onClick = onNegativeClick) {
+                        Text(text = "CANCEL")
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    TextButton(onClick = {
+                        onPositiveClick(color)
+                    }) {
+                        Text(text = "OK")
+                    }
+                }
             }
         }
-    )
+    }
 }

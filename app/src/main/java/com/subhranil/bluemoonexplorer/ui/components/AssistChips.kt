@@ -15,14 +15,14 @@ import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExploreDeviceAssistChip(
-    details: State<Root>,
+    details: State<Root?>,
     navController: NavController,
     globalStorageViewModel: GlobalStorageViewModel,
     device: Device
 ) {
     AssistChip(
         onClick = {
-            if (details.value.drives != emptyList<String>()) {
+            if (details.value?.drives != emptyList<String>()) {
                 globalStorageViewModel.selectDevice(device)
                 globalStorageViewModel.addPath(null)
                 navController.navigate(

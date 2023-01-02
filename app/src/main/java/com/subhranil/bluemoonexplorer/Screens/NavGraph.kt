@@ -1,12 +1,20 @@
 package com.subhranil.bluemoonexplorer.Screens
 
+import android.app.Activity
+import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.subhranil.bluemoonexplorer.models.Device
+import com.subhranil.bluemoonexplorer.models.Root
+import com.subhranil.bluemoonexplorer.storage.PrivateStorage
 import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 @Composable
 fun SetupNavGraph(
@@ -14,7 +22,13 @@ fun SetupNavGraph(
     scope: LifecycleCoroutineScope
 ) {
     val globalStorageViewModel: GlobalStorageViewModel = viewModel()
-//    loadStorage(globalStorageViewModel)
+    val storage: PrivateStorage = PrivateStorage(LocalContext.current as Activity)
+    if (storage.getString("devices") != null){
+        Json.decodeFromString<List<Device>>(storage.getString("devices")!!).forEach {
+            globalStorageViewModel.addToDeviceList(it)
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route

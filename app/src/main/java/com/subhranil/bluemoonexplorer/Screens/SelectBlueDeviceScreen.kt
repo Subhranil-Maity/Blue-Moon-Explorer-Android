@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
 import com.subhranil.bluemoonexplorer.TestItems.testDevice
+import com.subhranil.bluemoonexplorer.ui.components.AddDeviceFloatingActionButton
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceCard
-import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceFloatingActionButton
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceTopAppBar
 import com.subhranil.bluemoonexplorer.viewmodels.GlobalStorageViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -23,8 +23,6 @@ fun SelectBlueDeviceScreen(
     navController: NavController,
     scope: CoroutineScope
 ){
-
-
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -37,13 +35,13 @@ fun SelectBlueDeviceScreen(
             BlueDeviceTopAppBar(scrollBehavior)
         },
         floatingActionButton = {
-            BlueDeviceFloatingActionButton(scope = scope, snackbarHostState = snackbarHostState)
+            AddDeviceFloatingActionButton(scope = scope, snackbarHostState = snackbarHostState)
         }
     ) {
         LazyColumn(
             contentPadding = it
         ) {
-            item {
+            item(globalStorageViewModel.deviceList){
 
                 BlueDeviceCard(
                     navController,
@@ -51,6 +49,7 @@ fun SelectBlueDeviceScreen(
                     device = testDevice
                 )
             }
+
         }
     }
 }
