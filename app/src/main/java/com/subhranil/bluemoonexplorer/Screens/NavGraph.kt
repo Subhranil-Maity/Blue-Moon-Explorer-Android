@@ -21,8 +21,10 @@ fun SetupNavGraph(
     navController: NavHostController,
     scope: LifecycleCoroutineScope
 ) {
-    val globalStorageViewModel: GlobalStorageViewModel = viewModel()
     val storage: PrivateStorage = PrivateStorage(LocalContext.current as Activity)
+    val globalStorageViewModel: GlobalStorageViewModel = viewModel()
+    globalStorageViewModel.setPrivateStorage(storage)
+
     if (storage.getString("devices") != null){
         Json.decodeFromString<List<Device>>(storage.getString("devices")!!).forEach {
             globalStorageViewModel.addToDeviceList(it)

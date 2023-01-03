@@ -15,7 +15,7 @@ import io.ktor.client.request.*
 //@kotlinx.serialization.Serializable
 object BlueDevice {
     private val client: HttpClient = getClient()
-    private fun getBaseUrl(device: Device): String {
+    fun getBaseUrl(device: Device): String {
         return "${device.method.string}${device.host}:${device.port}"
     }
 

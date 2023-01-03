@@ -4,5 +4,7 @@ enum class FileType {
     PHOTO,
     TEXT,
     UNKNOWN,
-    HIDDEN
+    HIDDEN,
+    AUDIO,
+    VIDEO
 }

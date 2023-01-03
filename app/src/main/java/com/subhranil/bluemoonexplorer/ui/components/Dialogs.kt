@@ -1,31 +1,25 @@
 package com.subhranil.bluemoonexplorer.ui.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.subhranil.bluemoonexplorer.BlueMoonApi.Method
+import com.subhranil.bluemoonexplorer.models.Device
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomDialogWithResultExample(
-    onDismiss: () -> Unit, onNegativeClick: () -> Unit, onPositiveClick: (Color) -> Unit
+fun AskForNewDeviceDetailsDialog(
+    onDismiss: () -> Unit, onNegativeClick: () -> Unit, onPositiveClick: (Device) -> Unit
 ) {
     var host by remember { mutableStateOf("") }
     var port by remember { mutableStateOf("") }
     var pwd by remember { mutableStateOf("") }
-    var red by remember { mutableStateOf(0f) }
-    var green by remember { mutableStateOf(0f) }
-    var blue by remember { mutableStateOf(0f) }
-
-    val color = Color(
-        red = red.toInt(), green = green.toInt(), blue = blue.toInt(), alpha = 255
-    )
 
     Dialog(onDismissRequest = onDismiss) {
 
@@ -50,39 +44,31 @@ fun CustomDialogWithResultExample(
 
 
                     Column {
-
-                        Text(text = "Red ${red.toInt()}")
-                        Slider(value = red,
-                            onValueChange = { red = it },
-                            valueRange = 0f..255f,
-                            onValueChangeFinished = {})
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(text = "Green ${green.toInt()}")
-                        Slider(value = green,
-                            onValueChange = { green = it },
-                            valueRange = 0f..255f,
-                            onValueChangeFinished = {})
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(text = "Blue ${blue.toInt()}")
-                        Slider(value = blue,
-                            onValueChange = { blue = it },
-                            valueRange = 0f..255f,
-                            onValueChangeFinished = {})
-
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Surface(
-                            border = BorderStroke(1.dp, Color.DarkGray),
-                            color = color,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(40.dp)
-                        ) {}
+                        TextField(
+                            value = host, onValueChange = { host = it },
+                            label = {
+                                Text(
+                                    text = "Host"
+                                )
+                            },
+                        )
+                        TextField(value = port, onValueChange = {
+                            if (port.length <= 5) {
+                                port = it
+                            }
+                        }, label = {
+                            Text(
+                                text = "Port"
+                            )
+                        },
+                        maxLines = 1)
+                        TextField(value = pwd, onValueChange = { pwd = it }, label = {
+                            Text(
+                                text = "Password"
+                            )
+                        })
                     }
                 }
-
-                // Buttons
                 Row(
                     horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()
                 ) {
@@ -92,7 +78,11 @@ fun CustomDialogWithResultExample(
                     }
                     Spacer(modifier = Modifier.width(4.dp))
                     TextButton(onClick = {
-                        onPositiveClick(color)
+                        onPositiveClick(
+                            Device(
+                                host = host, port = port.toInt(), pwd = pwd, method = Method.http
+                            )
+                        )
                     }) {
                         Text(text = "OK")
                     }

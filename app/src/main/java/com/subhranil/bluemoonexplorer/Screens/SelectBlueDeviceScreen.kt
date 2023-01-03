@@ -1,14 +1,15 @@
 package com.subhranil.bluemoonexplorer.Screens
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.subhranil.bluemoonexplorer.TestItems.testDevice
 import com.subhranil.bluemoonexplorer.ui.components.AddDeviceFloatingActionButton
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceCard
 import com.subhranil.bluemoonexplorer.ui.components.BlueDeviceTopAppBar
@@ -35,18 +36,18 @@ fun SelectBlueDeviceScreen(
             BlueDeviceTopAppBar(scrollBehavior)
         },
         floatingActionButton = {
-            AddDeviceFloatingActionButton(scope = scope, snackbarHostState = snackbarHostState)
+            AddDeviceFloatingActionButton(globalStorageViewModel)
         }
     ) {
         LazyColumn(
-            contentPadding = it
+            contentPadding = it,
+            modifier = Modifier.padding(5.dp)
         ) {
-            item(globalStorageViewModel.deviceList){
-
+            items(globalStorageViewModel.deviceList.size){ item ->
                 BlueDeviceCard(
                     navController,
                     globalStorageViewModel = globalStorageViewModel,
-                    device = testDevice
+                    device = globalStorageViewModel.deviceList[item]
                 )
             }
 

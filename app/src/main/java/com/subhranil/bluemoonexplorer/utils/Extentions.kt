@@ -1,7 +1,6 @@
 package com.subhranil.bluemoonexplorer.utils
 
 import com.subhranil.bluemoonexplorer.utils.enum.FileType
-import java.util.*
 
 object Extentions {
     private val photos = listOf<String>(
@@ -17,10 +16,36 @@ object Extentions {
         "sys",
         "ini"
     )
+    private val audio = listOf(
+        "mp3",
+        "pcm",
+        "wav",
+        "aiff",
+        "aac",
+        "ogg",
+        "wma",
+        "flac"
+    )
+    private val video = listOf(
+        "mp4",
+        "mov",
+        "wmv",
+        "avi",
+        "avchd",
+        "flv",
+        "f4v",
+        "swf",
+        "mkv",
+        "webm",
+        "html5",
+        "mpeg-2"
+    )
     fun getFileType(name: String): FileType {
-        val extention: String = name.substringAfterLast(".").lowercase()
-        if (extention in photos) return FileType.PHOTO
-        if (extention in hiddenFileType) return FileType.HIDDEN
+        val extension: String = name.substringAfterLast(".").lowercase()
+        if (extension in photos) return FileType.PHOTO
+        if (extension in hiddenFileType) return FileType.HIDDEN
+        if (extension in audio) return FileType.AUDIO
+        if (extension in video) return FileType.VIDEO
         return FileType.UNKNOWN
     }
 }

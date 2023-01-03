@@ -20,6 +20,8 @@ object ItemIcon {
         if (item.type == "folder") return painterResource(id = R.drawable.folder)
         if (item.type == "drive") return painterResource(id = R.drawable.storage)
         if (getFileType(item.name) == FileType.PHOTO) return painterResource(id = R.drawable.image)
+        if (getFileType(item.name) == FileType.AUDIO) return painterResource(id = R.drawable.audio)
+        if (getFileType(item.name) == FileType.VIDEO) return painterResource(id = R.drawable.video)
         return painterResource(id = R.drawable.file)
     }
 
@@ -33,6 +35,5 @@ object ItemIcon {
                 .height(50.dp)
                 .width(50.dp)
         )
-
     }
 }
